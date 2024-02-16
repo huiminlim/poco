@@ -151,6 +151,13 @@ $(ls -C "$base"/build/config/)
 ENDHELP
 }
 
+echo "*********************************************************************"
+echo "WARNING: Make is not officially supported to build Poco, use CMake"
+echo "(Use option --force-legacy-build to continue)"
+echo "*********************************************************************"
+
+force_legacy_build=false
+
 # save cwd
 build=$(pwd)
 # get directory where we are located
@@ -280,6 +287,9 @@ while [ $# -ge 1 ]; do
 	--shared)
 		shared=1 ;;
 
+	--force-legacy-build)
+		force_legacy_build=true ;;
+
 	--help)
  		showhelp
  		exit 0
@@ -293,6 +303,11 @@ while [ $# -ge 1 ]; do
 
  	shift
 done
+
+if [[ "$force_legacy_build" == false ]] ; then
+	exit 1
+fi
+
 # autodetect build environment
 # ...special cases for CYGWIN or MinGW
 if [ "$config" = "" ] ; then
